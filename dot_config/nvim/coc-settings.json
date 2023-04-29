@@ -1,0 +1,38 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": ["python", "nix"],
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": [
+        "terraform",
+        "tf"
+      ],
+      "initializationOptions": {
+        "experimentalFeatures": {
+          "prefillRequiredFields": true
+        }
+      },
+      "settings": {}
+    }
+  },
+  "python": {
+    "formatting": {
+      "provider": "black"
+    }
+  },
+  "diagnostic-languageserver": {
+    "formatFiletypes": {
+      "nix": "alejandra"
+    },
+    "formatters": {
+      "alejandra": {
+        "command": "alejandra",
+        "rootPatterns": [
+          ".git"
+        ],
+        "formatStdin": true
+      }
+    }
+  }
+}
