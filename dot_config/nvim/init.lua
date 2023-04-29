@@ -1,8 +1,21 @@
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 require('packer').startup(function(use)
   use { "wbthomason/packer.nvim" }
 
-  use 'Shatur/neovim-ayu'
-  use 'vim-airline/vim-airline'
+  use { 'Shatur/neovim-ayu', config = require('config/ayu') }
+  use { 'vim-airline/vim-airline', config = require('config/airline') }
   use 'vim-airline/vim-airline-themes'
 
   use 'nathom/filetype.nvim'
@@ -12,13 +25,17 @@ require('packer').startup(function(use)
       local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
       ts_update()
     end,
+    config = require('config/treesitter')
   }
   use { 'neoclide/coc.nvim', branch = 'release' }
   use 'ctrlpvim/ctrlp.vim'
   use 'github/copilot.vim'
-end)
 
-vim.g.coc_global_extensions = { 'coc-pyright', 'coc-diagnostic' }
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+end)
+vim.g.coc_global_extensions = { 'coc-pyright', 'coc-diagnostic', 'coc-lua' }
 
 require("filetype").setup {
   overrides = {
@@ -30,50 +47,22 @@ require("filetype").setup {
   },
 }
 
-require('nvim-treesitter.configs').setup {
-  ensure_installed = { "terraform", "hcl", "nix" },
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = true,
-  },
-}
-
-vim.g.airline_powerline_fonts = true
-vim.g.airline_theme = "ayu_mirage"
---vim.opt.fillchars = { vert = "▐" }
--- vim.cmd([[
---  set fillchars+="vert:\"
--- ]])
-
-local ayu = require('ayu')
-ayu.setup({
-  mirage = true, -- Set to `true` to use `mirage` variant instead of `dark` for dark background.
-  overrides = {
-    VertSplit = { fg = "#666b7c" }
-    -- override vertical split color to white
-  }, -- A dictionary of group names, each associated with a dictionary of parameters (`bg`, `fg`, `sp` and `style`) and colors in hex.
-})
-
-ayu.colorscheme()
-
-vim.opt.showmatch = true               -- show matching 
-vim.opt.ignorecase = true              -- case insensitive 
-vim.opt.mouse = "v"                 -- middle-click paste with 
-vim.opt.hlsearch = true                -- highlight search 
-vim.opt.incsearch = true               -- incremental search
-vim.opt.tabstop = 4               -- number of columns occupied by a tab 
+vim.opt.showmatch = true          -- show matching
+vim.opt.ignorecase = true         -- case insensitive
+vim.opt.mouse = "v"               -- middle-click paste with
+vim.opt.hlsearch = true           -- highlight search
+vim.opt.incsearch = true          -- incremental search
+vim.opt.tabstop = 4               -- number of columns occupied by a tab
 vim.opt.softtabstop = 2           -- see multiple spaces as tabstops so <BS> does the right thing
-vim.opt.expandtab = true               -- converts tabs to white space
+vim.opt.expandtab = true          -- converts tabs to white space
 vim.opt.shiftwidth = 2            -- width for autoindents
-vim.opt.autoindent = true              -- indent a new line the same amount as the line just typed
+vim.opt.autoindent = true         -- indent a new line the same amount as the line just typed
 vim.opt.smartindent = true
-vim.opt.number = true                  -- add line numbers
-vim.opt.wildmode = "longest,list"   -- get bash-like tab completions
-vim.opt.mouse = "a"                 -- enable mouse click
-vim.opt.clipboard = "unnamedplus"   -- using system clipboard
-vim.opt.cursorline = true              -- highlight current cursorline
+vim.opt.number = true             -- add line numbers
+vim.opt.wildmode = "longest,list" -- get bash-like tab completions
+vim.opt.mouse = "a"               -- enable mouse click
+vim.opt.clipboard = "unnamedplus" -- using system clipboard
+vim.opt.cursorline = true         -- highlight current cursorline
 vim.opt.ttyfast = true
 vim.opt.backupdir = "~/.cache/vim"
 vim.opt.number = true
