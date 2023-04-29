@@ -1,5 +1,5 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["python", "nix"],
+  "coc.preferences.formatOnSaveFiletypes": ["python", "nix", "lua"],
   "languageserver": {
     "terraform": {
       "command": "terraform-ls",
