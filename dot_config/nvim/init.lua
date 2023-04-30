@@ -35,7 +35,12 @@ require('packer').startup(function(use)
     require('packer').sync()
   end
 end)
-vim.g.coc_global_extensions = { 'coc-pyright', 'coc-diagnostic', 'coc-lua' }
+vim.g.coc_global_extensions = {
+  'coc-pyright',
+  'coc-diagnostic',
+  'coc-lua',
+  'coc-tsserver'
+}
 
 require("filetype").setup {
   overrides = {
