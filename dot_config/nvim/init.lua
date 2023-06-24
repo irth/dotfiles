@@ -238,4 +238,6 @@ else
       nnoremap <silent> <Leader><Leader> :source $MYVIMRC<cr>
 
       nnoremap <silent> <Leader><space> :nohlsearch<cr>
+
+      autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
       ]])
