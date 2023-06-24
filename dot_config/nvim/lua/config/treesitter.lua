@@ -1,6 +1,6 @@
 return function()
   require('nvim-treesitter.configs').setup {
-    ensure_installed = { "terraform", "hcl", "nix" },
+    ensure_installed = { "terraform", "hcl", "nix", "html" },
     highlight = {
       enable = true,
     },
