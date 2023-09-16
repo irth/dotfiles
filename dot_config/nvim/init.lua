@@ -28,13 +28,20 @@ require('packer').startup(function(use)
     config = require('config/treesitter')
   }
   use { 'neoclide/coc.nvim', branch = 'release' }
-  use 'ctrlpvim/ctrlp.vim'
   use 'github/copilot.vim'
+
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.2',
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  }
+
+  use('theprimeagen/harpoon')
 
   if packer_bootstrap then
     require('packer').sync()
   end
 end)
+
 vim.g.coc_global_extensions = {
   'coc-pyright',
   'coc-diagnostic',
@@ -79,6 +86,9 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.updatetime = 300
 vim.opt.signcolumn = "yes"
+
+vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 vim.cmd([[
 
@@ -208,6 +218,12 @@ else
       " Add `:OR` command for organize imports of the current buffer
       command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
+      function! FormatAndImports()
+        call CocAction('format')
+        call CocActionAsync('runCommand', 'editor.action.organizeImport')
+      endfunction
+      autocmd BufWritePre *.go :call FormatAndImports()
+
       " Add (Neo)Vim's native statusline support
       " NOTE: Please see `:h coc-status` for integrations with external plugins that
       " provide custom statusline: lightline.vim, vim-airline
@@ -234,8 +250,6 @@ else
 
 
       " set leader
-      let mapleader = "," " map leader to comma
-      nnoremap <silent> <Leader><Leader> :source $MYVIMRC<cr>
 
       nnoremap <silent> <Leader><space> :nohlsearch<cr>
 
