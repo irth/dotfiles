@@ -17,4 +17,13 @@ function prof
 end
 
 alias vim=nvim
+
+set PATH $PATH /Users/wojciech/go/bin
+
+# Created by `pipx` on 2023-09-16 02:45:39
+set PATH $PATH /Users/wojciech/.local/bin
+
+pyenv init - | source
+
 set -x LANG en_US.UTF-8
+
