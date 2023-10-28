@@ -17,3 +17,4 @@ function prof
 end
 
 alias vim=nvim
+set -x LANG en_US.UTF-8
